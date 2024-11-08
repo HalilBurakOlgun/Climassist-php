@@ -1,0 +1,86 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Climassist</title>
+    <link rel="stylesheet" href="../assets/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="_layout.css" />
+    <link rel="icon" href="../assets/images/apple-touch-icon.png" type="image/x-icon" />
+    <link rel="shortcut icon" href="../assets/images/apple-touch-icon" type="image/x-icon" />
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <img src="../assets/images/climassist_logo.png" alt="Climassist" height="50px" />
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <div style="display: flex; gap: 10px; align-items: center; margin-left: auto;">
+                        @if (HttpContextAccessor.HttpContext.Session.GetString("UserId") != null)
+                        {
+                        var userName = HttpContextAccessor.HttpContext.Session.GetString("UserName");
+                        var userSurname = HttpContextAccessor.HttpContext.Session.GetString("UserSurname");
+
+                        <span class="nav-link" style="color: darkblue;">Merhaba, @userName @userSurname</span>
+
+                        <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
+                            <button type="submit" class="nav-link"
+                                style="background-color: darkblue; color: white; padding: 10px 15px; border-radius: 5px; text-align: center; text-decoration: none; transition: background-color 0.3s ease; border: none;">
+                                Çıkış Yap
+                            </button>
+                        </form>
+
+                        <a class="nav-link" asp-controller="Requests" asp-action="Index"
+                            style="background-color: darkblue; color: white; padding: 10px 15px; border-radius: 5px; text-align: center; text-decoration: none; transition: background-color 0.3s ease;">
+                            Talep Görüntüle
+                        </a>
+                        }
+                        else
+                        {
+                        <a class="nav-link" asp-controller="Account" asp-action="Login">Giriş Yap</a>
+                        <a class="nav-link" asp-controller="Account" asp-action="Register">Kayıt Ol</a>
+
+                        <a class="nav-link" asp-controller="Requests" asp-action="TrackRequest"
+                            style="background-color: darkblue; color: white; padding: 10px 15px; border-radius: 5px; text-align: center; text-decoration: none; transition: background-color 0.3s ease;">
+                            Kod ile Takip
+                        </a>
+                        }
+                        <a class="nav-link" asp-controller="Requests" asp-action="Create"
+                            style="background-color: darkblue; color: white; padding: 10px 15px; border-radius: 5px; text-align: center; text-decoration: none; transition: background-color 0.3s ease;">
+                            Talep Oluştur
+                        </a>
+                        @if (HttpContextAccessor.HttpContext.Session.GetString("UserType") == "Admin")
+                        {
+                        <a href="@Url.Action(" Create", "Account" )" class="btn btn-primary"
+                            style="background-color: darkblue; color: white; padding: 10px 15px; border-radius: 5px; text-align: center; text-decoration: none; transition: background-color 0.3s ease;">
+                            Yeni Kullanıcı Ekle</a>
+                        <a class="nav-link" href="@Url.Action(" UserList", "Account" )"
+                            style="background-color: darkblue; color: white; padding: 10px 15px; border-radius: 5px; text-align: center; text-decoration: none; transition: background-color 0.3s ease;">
+                            Kullanıcıları Yönet</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="../assets/lib/jquery/dist/jquery.min.js"></script>
+    <script src="../assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>
